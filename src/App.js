@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import StarList from './StarList';
-
-const shouldFail = id => [3, 4].includes(id);
+import { shouldFail } from './utils'
 
 const initialState = {
   items: [0, 3, 8, 0, 1].map((stars, i) => ({
