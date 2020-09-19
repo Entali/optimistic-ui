@@ -20,14 +20,34 @@ const useStyles = makeStyles({
     margin: '0 4px',
     cursor: 'pointer'
   },
-  icon: {
-
-  }
+  icon: {}
 });
 
 const StarList = (props) => {
   const {data, starredItems} = props;
   const classes = useStyles();
+
+  const renderButton = (stars, id) => {
+    return (
+        <div className={classes.likeButton} onClick={onClick}>
+          <span className={classes.likeIcon}>
+            <Icon
+                className={classes.icon}
+                color={starredItems.includes(id) ? 'error' : 'inherit'}
+            >
+              {stars ? 'star' : 'star_outlined'}
+            </Icon>
+          </span>
+          <span style={{color: starredItems.includes(id) && 'red'}}>
+            {stars}
+          </span>
+        </div>
+    )
+  }
+
+  const onClick = () => {
+    console.log('click')
+  }
 
   const renderItems = () => {
     return data.map(({id, stars, username, icon, content}) => {
@@ -39,19 +59,7 @@ const StarList = (props) => {
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={username} secondary={content}/>
-            <div className={classes.likeButton} onClick={() => null}>
-              <span className={classes.likeIcon}>
-                <Icon
-                    className={classes.icon}
-                    color={starredItems.includes(id) ? 'error' : 'inherit'}
-                >
-                  {stars ? 'star' : 'star_outlined'}
-                </Icon>
-              </span>
-              <span style={{ color: starredItems.includes(id) && 'red' }}>
-                {stars}
-              </span>
-            </div>
+            {renderButton(stars, id)}
           </ListItem>
       )
     })
@@ -63,4 +71,4 @@ const StarList = (props) => {
       </List>
   )
 };
- export default StarList;
+export default StarList;
