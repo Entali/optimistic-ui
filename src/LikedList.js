@@ -6,7 +6,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import {shouldFail} from './utils'
 
 const useStyles = makeStyles({
   root: {
@@ -24,6 +23,9 @@ const useStyles = makeStyles({
   icon: {}
 });
 
+const shouldFail = id => [3, 4].includes(id);
+
+// Fake request. Fail for id 3 and 4
 const httpRequest = (id) => {
   console.log('http request pending')
   return new Promise((resolve, reject) => {

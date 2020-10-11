@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import './App.css';
 import LikedList from './LikedList';
-import {shouldFail} from './utils'
 
 const initialState = {
   items: [29, 0, 54, 17, 46].map((likes, i) => ({
     id: i + 1,
     likes,
-    username: `${shouldFail(i + 1) ? 'Fail' : 'Cool'}`,
+    username: `User ${i + 1}`,
     content: 'Text goes here'
   })),
   likedItems: [2, 5]
