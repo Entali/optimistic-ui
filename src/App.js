@@ -6,7 +6,7 @@ const initialState = {
   items: [29, 0, 54, 17, 46].map((likes, i) => ({
     id: i + 1,
     likes,
-    username: `User ${i + 1}`,
+    username: [`User ${i + 1}`],
     content: 'Text goes here'
   })),
   likedItems: [2, 5]

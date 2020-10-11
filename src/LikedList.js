@@ -5,22 +5,30 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles({
   root: {
-    width: '100%',
-    maxWidth: 360
+    width: '400px',
   },
-  likeButton: {
+  container: {
+    position: 'relative',
+    margin: '20px 0 40px',
+    paddingBottom: '50px',
+    background: '#fff',
+    boxShadow: '1px 1px 1px 0 #e0e0e0'
+  },
+  actions: {
+    position: 'absolute',
+    bottom: '10px',
+    left: '8px',
+    width: '100%',
     display: 'flex',
+    justifyContent: 'space-evenly',
     alignItems: 'center'
   },
-  likeIcon: {
-    margin: '0 4px',
+  likeButton: {
     cursor: 'pointer'
-  },
-  icon: {}
+  }
 });
 
 const shouldFail = id => [3, 4].includes(id);
@@ -51,9 +59,8 @@ const LikedList = (props) => {
   const renderButton = (likes, id) => {
     let likedByMe = likedItems.includes(id)
     return (
-        <div className={classes.likeButton} onClick={onClick(id)}>
+        <div onClick={onClick(id)} className={classes.likeButton}>
           <span
-              className={classes.likeIcon}
               style={{ color: likes && likedByMe ? 'red' : 'inherit' }}
           >
             <i className={`fa${likes ? 's' : 'r'} fa-heart`} />
@@ -65,16 +72,25 @@ const LikedList = (props) => {
   }
 
   const renderItems = () => {
-    return data.map(({id, likes, username, icon, content}) => {
+    return data.map(({id, likes, username, content}) => {
       return (
-          <ListItem key={`${id + username}`}>
+          <ListItem key={`${id + username}`} className={classes.container}>
             <ListItemAvatar>
               <Avatar>
-                <Icon>{icon}</Icon>
+                <i className="fas fa-user-astronaut" />
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={username} secondary={content}/>
-            {renderButton(likes, id)}
+            <div className={classes.actions}>
+              <span>
+                <i className="fas fa-comment" />
+                &nbsp;
+                <span>{likes + 7}</span>
+              </span>
+              <i className="fas fa-share" />
+              {renderButton(likes, id)}
+              <i className="fas fa-envelope" />
+            </div>
           </ListItem>
       )
     })
