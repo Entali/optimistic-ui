@@ -1,26 +1,26 @@
 import React, {Component} from 'react';
 import './App.css';
-import StarList from './StarList';
-import { shouldFail } from './utils'
+import LikedList from './LikedList';
+import {shouldFail} from './utils'
 
 const initialState = {
-  items: [0, 3, 8, 0, 1].map((stars, i) => ({
+  items: [29, 0, 54, 17, 46].map((likes, i) => ({
     id: i + 1,
-    stars,
+    likes,
     username: `${shouldFail(i + 1) ? 'Fail' : 'Cool'}`,
     content: 'Text goes here'
   })),
-  starredItems: [2, 5]
+  likedItems: [2, 5]
 };
 
 class App extends Component {
   state = initialState;
 
   render() {
-    const {items, starredItems} = this.state;
+    const {items, likedItems} = this.state;
     return (
         <section className="App">
-          <StarList data={items} starredItems={starredItems}/>
+          <LikedList data={items} likedItems={likedItems}/>
         </section>
     );
   }
