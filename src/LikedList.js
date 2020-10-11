@@ -27,11 +27,10 @@ const shouldFail = id => [3, 4].includes(id);
 
 // Fake request. Fail for id 3 and 4
 const httpRequest = (id) => {
-  console.log('http request pending')
+  console.log(`HTTP /like_post/${id}`)
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const shouldSucceed = !shouldFail(id);
-      console.log('shouldSucceed', shouldSucceed)
       shouldSucceed ? resolve() : reject();
     }, 2000)
   })
@@ -40,6 +39,14 @@ const httpRequest = (id) => {
 const LikedList = (props) => {
   const {data, likedItems} = props;
   const classes = useStyles();
+
+  const onClick = (id) => () => {
+    httpRequest(id)
+        .then(
+            res => console.log('resolved'),
+            rej => console.log('rejected')
+        )
+  }
 
   const renderButton = (likes, id) => {
     let likedByMe = likedItems.includes(id)
@@ -55,14 +62,6 @@ const LikedList = (props) => {
           </span>
         </div>
     )
-  }
-
-  const onClick = (id) => () => {
-    httpRequest(id)
-        .then(
-            res => console.log('resolved'),
-            rej => console.log('rejected')
-        )
   }
 
   const renderItems = () => {
