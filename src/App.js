@@ -74,13 +74,18 @@ const setPostLiked = (postId, newLiked) => {
 
 class App extends Component {
   state = initialState;
+  requestPending = false;
 
   onClick = (postId) => () => {
     const {likedPosts} = this.state;
     const isLiked = likedPosts.includes(postId)
 
+    if (this.requestPending) {
+      console.log('Request is pending...')
+      return;
+    }
     this.setState(setPostLiked(postId, !isLiked))
-    console.log(`State updated with id - ${postId}`)
+    this.requestPending = true;
 
     httpRequest(postId)
         .then((res) => {
@@ -89,8 +94,10 @@ class App extends Component {
         .catch((err) => {
           this.setState(setPostLiked(postId, isLiked))
           console.log('Error caught')
-        }
-    )
+        })
+        .then(() => {
+          this.requestPending = false
+        })
   }
 
   renderButton = (likes, id) => {
