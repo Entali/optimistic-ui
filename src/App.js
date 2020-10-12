@@ -60,10 +60,14 @@ class App extends Component {
 
   onClick = (postId) => () => {
     this.setState((state) => {
-      const {likedPosts} = state;
+      const {items, likedPosts} = state;
       const isLiked = likedPosts.includes(postId)
 
       return {
+        items: items.map((item) => item.id === postId
+            ? {...item, likes: item.likes + (isLiked ? -1 : 1)}
+            : item
+        ),
         likedPosts: isLiked
             ? likedPosts.filter(id => id !== postId)
             : [...state.likedPosts, postId]
@@ -77,9 +81,9 @@ class App extends Component {
           console.log('resolved')
         })
         .catch((err) => {
-            console.log('Error caught')
-          }
-      )
+              console.log('Error caught')
+            }
+        )
   }
 
   renderButton = (likes, id) => {
