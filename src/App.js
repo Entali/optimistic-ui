@@ -104,7 +104,7 @@ class App extends Component {
                 {color: likes && likedPosts.includes(id) ? 'red' : 'inherit'}
               }
           >
-            <i className={`fa${likes ? 's' : 'r'} fa-heart`}/>
+            <i className="fas fa-heart" />
             &nbsp;
             <span>{likes}</span>
           </span>
