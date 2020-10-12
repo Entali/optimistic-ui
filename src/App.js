@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import './App.css';
 
 const initialState = {
-  items: [29, 0, 54, 17, 46].map((likes, i) => ({
+  items: [29, 4, 59, 17, 46].map((likes, i) => ({
     id: i + 1,
     likes,
     username: [`User ${i + 1}`],
@@ -55,25 +55,31 @@ const httpRequest = (id) => {
   })
 }
 
+// setState updater
+const setPostLiked = (postId, newLiked) => {
+  return state => {
+    const {items, likedPosts} = state;
+
+    return {
+      items: items.map((item) => item.id === postId
+          ? {...item, likes: item.likes + (!newLiked ? -1 : 1)}
+          : item
+      ),
+      likedPosts: !newLiked
+          ? likedPosts.filter(id => id !== postId)
+          : [...state.likedPosts, postId]
+    }
+  }
+}
+
 class App extends Component {
   state = initialState;
 
   onClick = (postId) => () => {
-    this.setState((state) => {
-      const {items, likedPosts} = state;
-      const isLiked = likedPosts.includes(postId)
+    const {likedPosts} = this.state;
+    const isLiked = likedPosts.includes(postId)
 
-      return {
-        items: items.map((item) => item.id === postId
-            ? {...item, likes: item.likes + (isLiked ? -1 : 1)}
-            : item
-        ),
-        likedPosts: isLiked
-            ? likedPosts.filter(id => id !== postId)
-            : [...state.likedPosts, postId]
-      }
-    })
-
+    this.setState(setPostLiked(postId, !isLiked))
     console.log(`State updated with id - ${postId}`)
 
     httpRequest(postId)
