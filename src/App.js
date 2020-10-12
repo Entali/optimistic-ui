@@ -14,7 +14,7 @@ const initialState = {
     username: [`User ${i + 1}`],
     content: 'Text goes here'
   })),
-  likedItems: [2, 5]
+  likedPosts: [2, 5]
 };
 
 const useStyles = {
@@ -58,28 +58,40 @@ const httpRequest = (id) => {
 class App extends Component {
   state = initialState;
 
-  onClick = (id) => () => {
-    console.log(`State updated with id - ${id}`)
-    httpRequest(id)
+  onClick = (postId) => () => {
+    this.setState((state) => {
+      const {likedPosts} = state;
+      const isLiked = likedPosts.includes(postId)
+
+      return {
+        likedPosts: isLiked
+            ? likedPosts.filter(id => id !== postId)
+            : [...state.likedPosts, postId]
+      }
+    })
+
+    console.log(`State updated with id - ${postId}`)
+
+    httpRequest(postId)
         .then((res) => {
           console.log('resolved')
         })
         .catch((err) => {
-              console.log('Error caught')
-            }
-        )
+            console.log('Error caught')
+          }
+      )
   }
 
   renderButton = (likes, id) => {
     const {props, state, onClick} = this;
-    const {likedItems} = state;
+    const {likedPosts} = state;
     const {classes} = props;
 
     return (
         <div onClick={onClick(id)} className={classes.likeButton}>
           <span
               style={
-                {color: likes && likedItems.includes(id) ? 'red' : 'inherit'}
+                {color: likes && likedPosts.includes(id) ? 'red' : 'inherit'}
               }
           >
             <i className={`fa${likes ? 's' : 'r'} fa-heart`}/>
