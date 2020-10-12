@@ -87,9 +87,10 @@ class App extends Component {
           console.log('resolved')
         })
         .catch((err) => {
-              console.log('Error caught')
-            }
-        )
+          this.setState(setPostLiked(postId, isLiked))
+          console.log('Error caught')
+        }
+    )
   }
 
   renderButton = (likes, id) => {
