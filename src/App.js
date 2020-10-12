@@ -121,14 +121,12 @@ class App extends Component {
   render() {
     const {props, state, renderItems} = this;
     const {classes} = props;
-    const {items, likedItems} = state;
+    const {items} = state;
     return (
         <section className="App">
-
           <List className={classes.root}>
             {renderItems(items)}
           </List>
-          <LikedList data={items} likedItems={likedItems}/>
         </section>
     );
   }
