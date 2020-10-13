@@ -102,7 +102,7 @@ class App extends Component {
         })
         .catch((err) => {
           this.setState(setPostLiked(postId, isLiked))
-          console.log('Error caught')
+          console.log('rejected')
         })
         .then(() => {
           this.setState(setLoading(postId)) // false
