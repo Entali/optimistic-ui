@@ -180,6 +180,9 @@ class App extends Component {
 
 let style = css`
   background-color: green;
+  &:hover {
+    background-color: yellow;
+  }
 `
 
 class PlainList extends Component {
