@@ -12,7 +12,8 @@ const initialState = {
     id: i + 1,
     likes,
     username: [`User ${i + 1}`],
-    content: 'Text goes here'
+    content: 'Text goes here',
+    isLoading: false
   })),
   likedPosts: [2, 5]
 };
@@ -55,7 +56,7 @@ const httpRequest = (id) => {
   })
 }
 
-// setState updater
+// State updaters
 const setPostLiked = (postId, newLiked) => {
   return state => {
     const {items, likedPosts} = state;
@@ -72,20 +73,28 @@ const setPostLiked = (postId, newLiked) => {
   }
 }
 
+const setLoading = (postId) => {
+  return state => {
+    const {items} = state;
+
+    return {
+      items: items.map((item) => item.id === postId
+          ? {...item, isLoading: !item.isLoading}
+          : item
+      )
+    }
+  }
+}
+
 class App extends Component {
   state = initialState;
-  requestPending = false;
 
   onClick = (postId) => () => {
     const {likedPosts} = this.state;
     const isLiked = likedPosts.includes(postId)
 
-    if (this.requestPending) {
-      console.log('Request is pending...')
-      return;
-    }
     this.setState(setPostLiked(postId, !isLiked))
-    this.requestPending = true;
+    this.setState(setLoading(postId)) // true
 
     httpRequest(postId)
         .then((res) => {
@@ -96,17 +105,21 @@ class App extends Component {
           console.log('Error caught')
         })
         .then(() => {
-          this.requestPending = false
+          this.setState(setLoading(postId)) // false
         })
   }
 
-  renderButton = (likes, id) => {
+  renderButton = (likes, id, isLoading) => {
     const {props, state, onClick} = this;
     const {likedPosts} = state;
     const {classes} = props;
 
     return (
-        <div onClick={onClick(id)} className={classes.likeButton}>
+        <div
+            className={classes.likeButton}
+            onClick={!isLoading ? onClick(id, isLoading) : null}
+            style={{ pointerEvents: isLoading ? 'none' : 'all' }}
+        >
           <span
               style={
                 {color: likes && likedPosts.includes(id) ? 'red' : 'inherit'}
@@ -124,7 +137,7 @@ class App extends Component {
     const {props, renderButton} = this;
     const {classes} = props;
 
-    return items.map(({id, likes, username, content}) => {
+    return items.map(({id, likes, username, content, isLoading}) => {
       return (
           <ListItem key={`${id + username}`} className={classes.container}>
             <ListItemAvatar>
@@ -140,7 +153,7 @@ class App extends Component {
                 <span>{likes + 7}</span>
               </span>
               <i className="fas fa-share"/>
-              {renderButton(likes, id)}
+              {renderButton(likes, id, isLoading)}
               <i className="fas fa-envelope"/>
             </div>
           </ListItem>
