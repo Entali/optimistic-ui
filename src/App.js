@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import React, {Component} from 'react';
 import withStyles from '@material-ui/styles/withStyles';
 import List from "@material-ui/core/List";
@@ -5,7 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import {StyleSheet, css} from "aphrodite";
+import { css, jsx } from '@emotion/core'
 import './App.css';
 
 const initialState = {
@@ -177,16 +178,9 @@ class App extends Component {
   }
 }
 
-const style = StyleSheet.create({
-  list: {
-    listStyle: 'none',
-    backgroundColor: 'pink',
-
-    ':hover': {
-      backgroundColor: 'black'
-    }
-  }
-})
+let style = css`
+  background-color: green;
+`
 
 class PlainList extends Component {
   state = {
@@ -199,7 +193,7 @@ class PlainList extends Component {
   render() {
     const {items} = this.state;
     return items && items.length && (
-        <ul className={css(style.list)}>
+        <ul css={style}>
           {items.map(({id, title}) => (
             <li key={`${id}-${title}`}>{title}</li>
           ))}
