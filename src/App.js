@@ -5,6 +5,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
+import {StyleSheet, css} from "aphrodite";
 import './App.css';
 
 const initialState = {
@@ -118,14 +119,14 @@ class App extends Component {
         <div
             className={classes.likeButton}
             onClick={!isLoading ? onClick(id, isLoading) : null}
-            style={{ pointerEvents: isLoading ? 'none' : 'all' }}
+            style={{pointerEvents: isLoading ? 'none' : 'all'}}
         >
           <span
               style={
                 {color: likes && likedPosts.includes(id) ? 'red' : 'inherit'}
               }
           >
-            <i className="fas fa-heart" />
+            <i className="fas fa-heart"/>
             &nbsp;
             <span>{likes}</span>
           </span>
@@ -167,11 +168,43 @@ class App extends Component {
     const {items} = state;
     return (
         <section className="App">
+          <PlainList />
           <List className={classes.root}>
             {renderItems(items)}
           </List>
         </section>
     );
+  }
+}
+
+const style = StyleSheet.create({
+  list: {
+    listStyle: 'none',
+    backgroundColor: 'pink',
+
+    ':hover': {
+      backgroundColor: 'black'
+    }
+  }
+})
+
+class PlainList extends Component {
+  state = {
+    items: [1, 2, 3, 4, 5].map((i) => ({
+      id: i + 1,
+      title: `Item ${i + 1}`
+    }))
+  }
+
+  render() {
+    const {items} = this.state;
+    return items && items.length && (
+        <ul className={css(style.list)}>
+          {items.map(({id, title}) => (
+            <li key={`${id}-${title}`}>{title}</li>
+          ))}
+        </ul>
+    )
   }
 }
 
