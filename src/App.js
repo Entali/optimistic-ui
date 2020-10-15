@@ -1,11 +1,5 @@
 /** @jsx jsx */
 import React, {Component} from 'react';
-import withStyles from '@material-ui/styles/withStyles';
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import ListItemText from "@material-ui/core/ListItemText";
 import {css, jsx} from "@emotion/core";
 import './App.css';
 
@@ -20,30 +14,40 @@ const initialState = {
   likedPosts: [2, 5]
 };
 
-const useStyles = {
-  root: {
-    width: '400px',
-  },
-  container: {
-    position: 'relative',
-    margin: '20px 0 40px',
-    paddingBottom: '50px',
-    background: '#fff',
-    boxShadow: '1px 1px 1px 0 #e0e0e0'
-  },
-  actions: {
-    position: 'absolute',
-    bottom: '10px',
-    left: '8px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
-  },
-  likeButton: {
-    cursor: 'pointer'
-  }
-};
+const root = css({
+  width: '400px',
+  listStyle: 'none'
+})
+
+const container = css({
+  position: 'relative',
+  margin: '20px 0 40px',
+  paddingBottom: '50px',
+  background: '#fff',
+  boxShadow: '1px 1px 1px 0 #e0e0e0'
+})
+
+const avatar = css({
+  width: '50px',
+  height: '50px',
+  borderRadius: '50%',
+  backgroundColor: '#ccc'
+})
+
+const actions = css({
+  position: 'absolute',
+  bottom: '10px',
+  left: '8px',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  alignItems: 'center'
+})
+
+const likeButton = css({
+  cursor: 'pointer'
+})
+
 
 const shouldFail = id => [3, 4].includes(id);
 
@@ -112,13 +116,12 @@ class App extends Component {
   }
 
   renderButton = (likes, id, isLoading) => {
-    const {props, state, onClick} = this;
+    const {state, onClick} = this;
     const {likedPosts} = state;
-    const {classes} = props;
 
     return (
         <div
-            className={classes.likeButton}
+            css={likeButton}
             onClick={!isLoading ? onClick(id, isLoading) : null}
             style={{pointerEvents: isLoading ? 'none' : 'all'}}
         >
@@ -136,19 +139,19 @@ class App extends Component {
   }
 
   renderItems = (items) => {
-    const {props, renderButton} = this;
-    const {classes} = props;
+    const {renderButton} = this;
 
     return items.map(({id, likes, username, content, isLoading}) => {
       return (
-          <ListItem key={`${id + username}`} className={classes.container}>
-            <ListItemAvatar>
-              <Avatar>
-                <i className="fas fa-user-astronaut"/>
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={username} secondary={content}/>
-            <div className={classes.actions}>
+          <li key={`${id + username}`} css={container}>
+            <div css={avatar}>
+              <i className="fas fa-user-astronaut"/>
+            </div>
+            <div>
+              <div>{username}</div>
+              <div>{content}</div>
+            </div>
+            <div css={actions}>
               <span>
                 <i className="fas fa-comment"/>
                 &nbsp;
@@ -158,27 +161,26 @@ class App extends Component {
               {renderButton(likes, id, isLoading)}
               <i className="fas fa-envelope"/>
             </div>
-          </ListItem>
+          </li>
       )
     })
   };
 
   render() {
-    const {props, state, renderItems} = this;
-    const {classes} = props;
+    const {state, renderItems} = this;
     const {items} = state;
     return (
         <section className="App">
           <PlainList />
-          <List className={classes.root}>
+          <ul css={root}>
             {renderItems(items)}
-          </List>
+          </ul>
         </section>
     );
   }
 }
 
-const list = css({
+const plainList = css({
   listStyle: 'none',
   fontSize: '2em'
 })
@@ -194,7 +196,7 @@ class PlainList extends Component {
   render() {
     const {items} = this.state;
     return items && items.length && (
-        <ul css={list}>
+        <ul css={plainList}>
           {items.map(({id, title}) => (
               <li key={`${id}-${title}`}>{title}</li>
           ))}
@@ -203,4 +205,4 @@ class PlainList extends Component {
   }
 }
 
-export default withStyles(useStyles)(App);
+export default App;
