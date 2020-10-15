@@ -6,7 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import { css, jsx } from '@emotion/core'
+import {css, jsx} from "@emotion/core";
 import './App.css';
 
 const initialState = {
@@ -178,12 +178,10 @@ class App extends Component {
   }
 }
 
-let style = css`
-  background-color: green;
-  &:hover {
-    background-color: yellow;
-  }
-`
+const list = css({
+  listStyle: 'none',
+  fontSize: '2em'
+})
 
 class PlainList extends Component {
   state = {
@@ -196,9 +194,9 @@ class PlainList extends Component {
   render() {
     const {items} = this.state;
     return items && items.length && (
-        <ul css={style}>
+        <ul css={list}>
           {items.map(({id, title}) => (
-            <li key={`${id}-${title}`}>{title}</li>
+              <li key={`${id}-${title}`}>{title}</li>
           ))}
         </ul>
     )
