@@ -1,6 +1,5 @@
-/** @jsx jsx */
 import React, {Component} from 'react';
-import {css, jsx} from "@emotion/core";
+import {StyleSheet, css} from 'aphrodite';
 import './App.css';
 
 const initialState = {
@@ -14,40 +13,42 @@ const initialState = {
   likedPosts: [2, 5]
 };
 
-const root = css({
-  width: '400px',
-  listStyle: 'none'
-})
-
-const container = css({
-  position: 'relative',
-  margin: '20px 0 40px',
-  paddingBottom: '50px',
-  background: '#fff',
-  boxShadow: '1px 1px 1px 0 #e0e0e0'
-})
-
-const avatar = css({
-  width: '50px',
-  height: '50px',
-  borderRadius: '50%',
-  backgroundColor: '#ccc'
-})
-
-const actions = css({
-  position: 'absolute',
-  bottom: '10px',
-  left: '8px',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-evenly',
-  alignItems: 'center'
-})
-
-const likeButton = css({
-  cursor: 'pointer'
-})
-
+const styles = StyleSheet.create({
+  root: {
+    width: '400px',
+    listStyle: 'none'
+  },
+  container: {
+    display: 'flex',
+    position: 'relative',
+    margin: '20px 0 40px',
+    padding: '20px 10px 30px',
+    background: 'rgb(131 188 206)',
+    color: 'white'
+  },
+  avatar: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    backgroundColor: 'rgb(55 110 128)',
+    margin: '10px 20px 10px 10px'
+  },
+  actions: {
+    position: 'absolute',
+    bottom: '10px',
+    left: '10px',
+    width: '80%',
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
+  },
+  likeButton: {
+    cursor: 'pointer'
+  }
+});
 
 const shouldFail = id => [3, 4].includes(id);
 
@@ -121,7 +122,7 @@ class App extends Component {
 
     return (
         <div
-            css={likeButton}
+            className={css(styles.likeButton)}
             onClick={!isLoading ? onClick(id, isLoading) : null}
             style={{pointerEvents: isLoading ? 'none' : 'all'}}
         >
@@ -143,15 +144,15 @@ class App extends Component {
 
     return items.map(({id, likes, username, content, isLoading}) => {
       return (
-          <li key={`${id + username}`} css={container}>
-            <div css={avatar}>
+          <li key={`${id + username}`} className={css(styles.container)}>
+            <div className={css(styles.avatar)}>
               <i className="fas fa-user-astronaut"/>
             </div>
             <div>
               <div>{username}</div>
               <div>{content}</div>
             </div>
-            <div css={actions}>
+            <div className={css(styles.actions)}>
               <span>
                 <i className="fas fa-comment"/>
                 &nbsp;
@@ -172,18 +173,13 @@ class App extends Component {
     return (
         <section className="App">
           <PlainList />
-          <ul css={root}>
+          <ul className={css(styles.root)}>
             {renderItems(items)}
           </ul>
         </section>
     );
   }
 }
-
-const plainList = css({
-  listStyle: 'none',
-  fontSize: '2em'
-})
 
 class PlainList extends Component {
   state = {
@@ -196,7 +192,7 @@ class PlainList extends Component {
   render() {
     const {items} = this.state;
     return items && items.length && (
-        <ul css={plainList}>
+        <ul className={css(styles.root)}>
           {items.map(({id, title}) => (
               <li key={`${id}-${title}`}>{title}</li>
           ))}
